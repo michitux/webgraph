@@ -131,9 +131,9 @@ int main( int argc, char** argv ) {
 
    typedef boost::shared_ptr<graph> graph_ptr;
 
-   graph_ptr graph_out = graph::load_offline( name );
+   graph_ptr graph_out = graph::load_sequential( name );
 
-   graph_ptr graph_in = graph::load_offline( name + "-t");
+   graph_ptr graph_in = graph::load_sequential( name + "-t");
    
    graph::node_iterator u_out, u_in, u_out_end, u_in_end;
    
@@ -164,20 +164,15 @@ int main( int argc, char** argv ) {
          out_stream = std::ofstream(get_out_name(), std::ios::trunc | std::ios::binary);
       }
 
-      std::vector<int> out_neighbors = successor_vector(u_out);
-      std::vector<int> in_neigbors = successor_vector(u_in);
+      webgraph::bv_graph::graph::successor_iterator out_neighbors_it, out_neighbors_it_end;
+      webgraph::bv_graph::graph::successor_iterator in_neighbors_it, in_neighbors_it_end;
 
-      if (!std::is_sorted(out_neighbors.begin(), out_neighbors.end())) {
-         throw std::runtime_error("Error, out neighbors were assumed to be sorted but are not.");
-      }
-      
-      if (!std::is_sorted(in_neigbors.begin(), in_neigbors.end())) {
-         throw std::runtime_error("Error, in neighbors were assumed to be sorted but are not.");
-      }
+      boost::tie(out_neighbors_it, out_neighbors_it_end) = successors(u_out);
+      boost::tie(in_neighbors_it, in_neighbors_it_end) = successors(u_in);
 
       std::vector<int> combined_neighbors;
-      std::set_union(out_neighbors.begin(), out_neighbors.end(),
-                     in_neigbors.begin(), in_neigbors.end(),
+      std::set_union(out_neighbors_it, out_neighbors_it_end,
+                     in_neighbors_it, in_neighbors_it_end,
                      std::back_inserter(combined_neighbors));
 
       bytes_written += PutVarint(out_stream, combined_neighbors.size());
