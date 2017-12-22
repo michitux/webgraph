@@ -436,7 +436,7 @@ private:
                    << utils::int_to_binary( current, fill )
                    << "\n";
 #endif
-      } else {
+      } else if (is) {
          // we know we have to read a file, so catch that pesky eof exception
          try {
             int r = read();
