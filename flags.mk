@@ -5,7 +5,7 @@ LIBS = /u/jpr/old_code/webgraph
 
 #LIBS = /u/jpr/workspace/cpp_webgraph
 
-base = -I$(INCLUDES) -L$(LIBS) -Wall
+base = -std=c++11 -I$(INCLUDES) -L$(LIBS) -Wall
 
 ifdef CONFIG_PROFILE
 	prof = -pg
