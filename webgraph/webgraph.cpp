@@ -1282,12 +1282,12 @@ void graph::load_internal( string basename, int offset_step, std::ostream* log )
    // //throw new IOException( "This class (" + this.getClass().getName() + ") cannot
    // load a graph stored using " + props.getProperty( "graphclass" ) );
    
-//    ibitstream offset_ibs;
+   ibitstream offset_ibs;
    
-   ibitstream offset_ibs( basename + ".offsets", STD_BUFFER_SIZE );
+   //ibitstream offset_ibs( basename + ".offsets", STD_BUFFER_SIZE );
 
-//    if ( offset_step > 0 ) 
-//       offset_ibs = ibitstream( basename + ".offsets", STD_BUFFER_SIZE );
+   if ( offset_step > 0 ) 
+       offset_ibs = ibitstream( basename + ".offsets", STD_BUFFER_SIZE );
    
    if ( offset_step == 0 || offset_step == 1 ) {
       // No permutation is required: the graph file is loaded as such
